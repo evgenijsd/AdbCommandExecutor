@@ -3,9 +3,11 @@ using AdbCommandExecutor.ViewModels;
 using AdbCommandExecutor.Views;
 using Prism;
 using Prism.Ioc;
+using Prism.Navigation;
 using Prism.Unity;
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.Helpers;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,8 +21,14 @@ namespace AdbCommandExecutor
         {
         }
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
+            var navigationParameters = new NavigationParameters();
+            var navigationPath = $"{nameof(NavigationPage)}/";
+            navigationParameters.Add(Constants.Navigations.MAIN, true);
+            navigationPath += nameof(MainPage);
+
+            await NavigationService.NavigateAsync(navigationPath, navigationParameters);
         }
 
         protected override void OnSleep()
