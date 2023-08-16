@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismApplication 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+    xmlns:styles="clr-namespace:AdbCommandExecutor.Resources.Styles"
+    x:Class="AdbCommandExecutor.App">
+    <prism:PrismApplication.Resources>
+        <styles:DefaultResources>
+            <styles:DefaultResources.MergedDictionaries>
+                <styles:LightModeResources />
+                <styles:DarkModeResources />
+            </styles:DefaultResources.MergedDictionaries>
+        </styles:DefaultResources>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>

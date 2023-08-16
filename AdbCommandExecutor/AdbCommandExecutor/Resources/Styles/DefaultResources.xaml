@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary    
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AdbCommandExecutor.Resources.Styles.DefaultResources">
+
+    <!--  TEXT SIZE  -->
+    <!--  32px  -->
+    <x:Double x:Key="TSize_i1">32</x:Double>
+    <!--  30px  -->
+    <x:Double x:Key="TSize_i2">30</x:Double>
+    <!--  28px  -->
+    <x:Double x:Key="TSize_i3">28</x:Double>
+    <!--  24px  -->
+    <x:Double x:Key="TSize_i4">24</x:Double>
+    <!-- 18px -->
+    <x:Double x:Key="TSize_i5">18</x:Double>
+    <!--  16px  -->
+    <x:Double x:Key="TSize_i6">16</x:Double>
+    <!--  14px  -->
+    <x:Double x:Key="TSize_i7">14</x:Double>
+    <!--  12px  -->
+    <x:Double x:Key="TSize_i8">12</x:Double>
+
+</ResourceDictionary>

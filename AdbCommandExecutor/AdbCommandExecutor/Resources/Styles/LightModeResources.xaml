@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AdbCommandExecutor.Resources.Styles.LightModeResources">
+    
+    <!--  APP COLORS  -->
+
+    <Color x:Key="AppColor_i1">#F45E49</Color>
+
+    <Color x:Key="AppColor_i2">#EB5637</Color>
+
+    <Color x:Key="AppColor_i3">#D24A2E</Color>
+
+    <Color x:Key="AppColor_i4">#AB3821</Color>
+
+    <!--  Text & Background  -->
+
+    <Color x:Key="TextColor_i1">#212430</Color>
+
+    <Color x:Key="TextColor_i2">Blue</Color>
+
+    <Color x:Key="TextColor_i3">Green</Color>
+
+    <Color x:Key="BackgroundColor_i1">#FEFEFD</Color>
+
+    <Color x:Key="BackgroundColor_i2">Aqua</Color>
+
+    <Color x:Key="BackgroundColor_i3">#3CD47D</Color>
+
+
+    <!--  Indications  -->
+    <Color x:Key="IndicationColor_i1">#7B61FF</Color>
+    
+</ResourceDictionary>
