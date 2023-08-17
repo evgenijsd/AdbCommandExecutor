@@ -1,4 +1,5 @@
 ﻿using AdbCommandExecutor.Resources.Strings;
+using AdbCommandExecutor.Serrvices.Adb;
 using AdbCommandExecutor.ViewModels;
 using AdbCommandExecutor.Views;
 using Prism;
@@ -41,6 +42,8 @@ namespace AdbCommandExecutor
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterScoped<IAdbService, AdbService>();
+
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
         }

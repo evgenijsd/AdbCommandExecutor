@@ -61,11 +61,29 @@ namespace AdbCommandExecutor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute.
+        ///   Looks up a localized string similar to Clear recent.
         /// </summary>
-        internal static string Execute {
+        internal static string ClearRecent {
             get {
-                return ResourceManager.GetString("Execute", resourceCulture);
+                return ResourceManager.GetString("ClearRecent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get IP.
+        /// </summary>
+        internal static string GetIp {
+            get {
+                return ResourceManager.GetString("GetIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP.
+        /// </summary>
+        internal static string IP {
+            get {
+                return ResourceManager.GetString("IP", resourceCulture);
             }
         }
     }

@@ -8,15 +8,19 @@
     x:Class="AdbCommandExecutor.Views.MainPage"
     x:DataType="viewModels:MainPageViewModel">
 
-    <StackLayout
+    <StackLayout 
+        WidthRequest="1700" 
+        MinimumWidthRequest="1700"
+        HeightRequest="400"
+        MinimumHeightRequest="400"
         BackgroundColor="{DynamicResource BackgroundColor_i2}">
 
         <Grid
-            ColumnDefinitions="500, *"
+            ColumnDefinitions="400, 400"
             RowDefinitions="50, *">
 
             <Label
-                Text="{xct:Translate Execute}"
+                Text="{xct:Translate IP}"
                 FontFamily="OpenSans-Bold"
                 FontSize="{DynamicResource TSize_i3}"
                 TextColor="{DynamicResource TextColor_i3}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
@@ -29,93 +33,21 @@
                 Margin="10,5,0,5"
                 CornerRadius="10">
 
-                <!--<StackLayout>
-                    <CollectionView
-                        ItemsSource="{Binding Currencies}"
-                        SelectionMode="Single"
-                        SelectedItem="{Binding CoinSelected}"
-                        SelectionChangedCommand="{Binding SelectCoinCommand}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate
-                                x:DataType="bindableModels:CoinBindableModel">
-                                <Grid
-                                    ColumnDefinitions="Auto, 300, Auto"
-                                    Margin="10,15,0,0">
-
-                                    <Label
-                                        Text="{Binding Rank}"
-                                        FontFamily="OpenSans-SemiBold"
-                                        FontSize="{DynamicResource TSize_i5}"
-                                        TextColor="{DynamicResource TextColor_i1}"
-                                        Margin="5,0,5,0" />
-
-                                    <StackLayout
-                                        Grid.Column="1"
-                                        Margin="10,0,0,0">
-                                        <Label
-                                            Text="{Binding Name}"
-                                            FontFamily="OpenSans-SemiBold"
-                                            FontSize="{DynamicResource TSize_i5}"
-                                            TextColor="{DynamicResource TextColor_i1}" />
-
-                                        <Label
-                                            Text="{Binding Symbol}"
-                                            FontFamily="OpenSans-Regular"
-                                            FontSize="{DynamicResource TSize_i5}"
-                                            TextColor="{DynamicResource TextColor_i1}" />
-
-                                        <Label
-                                            Text="{Binding PriceUsd}"
-                                            FontFamily="OpenSans-SemiBold"
-                                            FontSize="{DynamicResource TSize_i5}"
-                                            TextColor="{DynamicResource TextColor_i2}" />
-                                    </StackLayout>
-
-                                    <Label
-                                        Grid.Column="2"
-                                        Text="{Binding ChangePercent24Hr, StringFormat='{0:F2}%'}"
-                                        FontSize="16"
-                                        HorizontalTextAlignment="Center"
-                                        Margin="5,5,10,5"
-                                        TextColor="{DynamicResource TextColor_i2}" />
-
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </StackLayout>-->
+                <StackLayout>
+                    <Label
+                        Text="{Binding Ip}"
+                        FontFamily="OpenSans-SemiBold"
+                        FontSize="{DynamicResource TSize_i5}"
+                        TextColor="{DynamicResource TextColor_i1}"
+                        Margin="5,0,5,0" />
+                </StackLayout>
             </Frame>
 
             <StackLayout
                 Grid.Column="1" Grid.Row="1">
-                <Entry 
-                    TextColor="{DynamicResource TextColor_i2}"
-                    FontFamily="OpenSans-Bold"
-                    BackgroundColor="{DynamicResource BackgroundColor_i1}"
-                    FontSize="{DynamicResource TSize_i5}" xct:CornerRadiusEffect.CornerRadius="10"
-                    Margin="15,10,15,0" />
 
                 <Button
-                    Text="{xct:Translate Execute}"
-                    TextColor="{DynamicResource TextColor_i2}"
-                    Margin="10"
-                    Padding="10" CornerRadius="10"
-                    BackgroundColor="{DynamicResource appcolor_i1}"
-                    FontFamily="OpenSans-Bold"
-                    FontSize="{DynamicResource TSize_i5}" />
-
-                <Entry
-                    Placeholder="{xct:Translate Execute}"
-                    TextColor="{DynamicResource TextColor_i2}"
-                    PlaceholderColor="{DynamicResource TextColor_i3}"
-                    FontFamily="OpenSans-Bold"
-                    BackgroundColor="{DynamicResource BackgroundColor_i1}"
-                    FontSize="{DynamicResource TSize_i5}"
-                    xct:CornerRadiusEffect.CornerRadius="10"
-                    Margin="15,20,15,0" />
-
-                <Button
-                    Text="{xct:Translate Execute}"
+                    Text="{xct:Translate ClearRecent}"
                     TextColor="{DynamicResource TextColor_i2}"
                     Margin="10"
                     Padding="10"
@@ -125,17 +57,7 @@
                     FontSize="{DynamicResource TSize_i5}" />
 
                 <Button
-                    Text="{xct:Translate Execute}"
-                    TextColor="{DynamicResource TextColor_i2}"
-                    Margin="10,150,10,10"
-                    Padding="10"
-                    CornerRadius="10"
-                    BackgroundColor="{DynamicResource appcolor_i1}"
-                    FontFamily="OpenSans-Bold"
-                    FontSize="{DynamicResource TSize_i5}" />
-
-                <Button
-                    Text="{xct:Translate Execute}"
+                    Text="{xct:Translate GetIp}"
                     TextColor="{DynamicResource TextColor_i2}"
                     Margin="10"
                     Padding="10"
