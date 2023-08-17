@@ -1,9 +1,5 @@
 ﻿using AdbCommandExecutor.Serrvices.Adb;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -21,7 +17,7 @@ namespace AdbCommandExecutor.ViewModels
 
         #region -- Public properties --
 
-        public string Ip { get; set; }
+        public string Ip { get; set; } = "0.0.0.0";
 
         private ICommand _clearRecentCommand;
         public ICommand ClearRecentCommand => _clearRecentCommand ??= new AsyncCommand(OnClearRecentCommand, allowsMultipleExecutions: false);

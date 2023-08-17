@@ -6,17 +6,15 @@
     xmlns:viewModels="clr-namespace:AdbCommandExecutor.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="AdbCommandExecutor.Views.MainPage"
-    x:DataType="viewModels:MainPageViewModel">
+    x:DataType="viewModels:MainPageViewModel"
+    WidthRequest="1500"
+    HeightRequest="300">
 
     <StackLayout 
-        WidthRequest="1700" 
-        MinimumWidthRequest="1700"
-        HeightRequest="400"
-        MinimumHeightRequest="400"
         BackgroundColor="{DynamicResource BackgroundColor_i2}">
 
         <Grid
-            ColumnDefinitions="400, 400"
+            ColumnDefinitions="300, 400"
             RowDefinitions="50, *">
 
             <Label
@@ -48,6 +46,7 @@
 
                 <Button
                     Text="{xct:Translate ClearRecent}"
+                    Command="{Binding ClearRecentCommand}"
                     TextColor="{DynamicResource TextColor_i2}"
                     Margin="10"
                     Padding="10"
@@ -58,6 +57,7 @@
 
                 <Button
                     Text="{xct:Translate GetIp}"
+                    Command="{Binding ReadIpCommand}"
                     TextColor="{DynamicResource TextColor_i2}"
                     Margin="10"
                     Padding="10"
