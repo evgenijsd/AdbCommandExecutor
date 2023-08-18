@@ -1,4 +1,6 @@
-﻿using AdvancedSharpAdbClient;
+﻿using AdbCommandExecutor.Helpers.ProcessHelpers;
+using AdbCommandExecutor.Resources.Strings;
+using AdvancedSharpAdbClient;
 using Prism.Services;
 using System;
 using System.Linq;
@@ -13,31 +15,29 @@ namespace AdbCommandExecutor.Serrvices.Adb
     public class AdbService : IAdbService
     {
         private AdbClient _client;
-        private readonly IPageDialogService _pageDialogService;
         private DeviceData _device;
 
-        public AdbService(IPageDialogService pageDialogService)
+        public async Task<AOResult> StartAsync()
         {
-            _pageDialogService = pageDialogService;
-        }
-
-        public async Task StartAsync()
-        {
+            var result = new AOResult();
+            
             if (!AdbServer.Instance.GetStatus().IsRunning)
-            {
+            {                
                 AdbServer server = new AdbServer();
                 try
                 {
-                    StartServerResult result = server.StartServer(Constants.Adb.PATH, false);
+                    StartServerResult run = server.StartServer(Constants.Adb.PATH, false);
 
-                    if (result != StartServerResult.Started)
+                    if (run != StartServerResult.Started)
                     {
-                        await _pageDialogService.DisplayAlertAsync("Error", $"Can't start adb server, please restart app and try again {result}", "OK");
+                        result.SetError($"{nameof(StartAsync)}: exception", $"Can't start adb server, please restart app and try again {run}");
+                        return result;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    await _pageDialogService.DisplayAlertAsync("Error", "Startup error", "OK");
+                    result.SetError($"{nameof(StartAsync)}: exception", "Startup error", ex);
+                    return result;
                 }
             }
 
@@ -47,85 +47,106 @@ namespace AdbCommandExecutor.Serrvices.Adb
 
             if (_device == null)
             {
-                await _pageDialogService.DisplayAlertAsync("Error", "Can't connect to device", "OK");
-                return;
+                result.SetError($"{nameof(StartAsync)}: exception", "Can't connect to device");
             }
+            else
+            {
+                result.SetSuccess();
+            }
+
+            return result;
         }
 
 
-        public async Task ClearRecentAppsAsync()
+        public async Task<AOResult> ClearRecentAppsAsync()
         {
-            if (_device == null) return;
-            await _client.HomeBtnAsync(_device);
-            await Task.Delay(1000);
-            await _client.SendKeyEventAsync(_device, Constants.Adb.RECENT);
-            await Task.Delay(1000);
-            ConsoleOutputReceiver receiver = new ConsoleOutputReceiver();
-            await _client.ExecuteRemoteCommandAsync("dumpsys activity recents", _device, receiver, CancellationToken.None);
-            string search = "Recent #";
-            int count = receiver.ToString().Split(new[] { search }, StringSplitOptions.None).Length - 2;
+            var result = new AOResult();            
 
-            for (int i = 0; i < count; i++)
+            if (_device == null) result.SetError($"{nameof(StartAsync)}: exception", "Can't connect to device");
+            else
             {
-                _client.Swipe(_device, 100, 250, 800, 250, 300);
-
-
-                var el = await _client.FindElementAsync(_device, Constants.Adb.CLEAR_BUTTON);
-
-                if (el != null)
-                {
-                    try
-                    {
-                        el.Click();
-                        return;
-                    } 
-                    catch (Exception ex)
-                    {
-                        await _pageDialogService.DisplayAlertAsync("Error", $"Can't click on the element:{ex.Message}", "OK");
-                    }
-                }
+                await _client.HomeBtnAsync(_device);
                 await Task.Delay(1000);
-            }
+                await _client.SendKeyEventAsync(_device, Constants.Adb.RECENT);
+                await Task.Delay(1000);
+                ConsoleOutputReceiver receiver = new ConsoleOutputReceiver();
+                await _client.ExecuteRemoteCommandAsync("dumpsys activity recents", _device, receiver, CancellationToken.None);
+                string search = "Recent #";
+                int count = receiver.ToString().Split(new[] { search }, StringSplitOptions.None).Length - 2;
+
+                for (int i = 0; i < count; i++)
+                {
+                    _client.Swipe(_device, 100, 250, 800, 250, 300);
+
+
+                    var el = await _client.FindElementAsync(_device, Constants.Adb.CLEAR_BUTTON);
+
+                    if (el != null)
+                    {
+                        try
+                        {
+                            el.Click();
+
+                            result.SetSuccess();
+                            return result;
+                        } 
+                        catch (Exception ex)
+                        {
+                            result.SetError($"{nameof(ClearRecentAppsAsync)}: exception", $"Can't click on the element", ex);
+                        }
+                    }
+                    await Task.Delay(1000);
+                }
             
-            if (count > 1)
-            {
-                await _pageDialogService.DisplayAlertAsync("Error", "Element not found", "OK");
+                if (count > 1)
+                {
+                    result.SetError($"{nameof(ClearRecentAppsAsync)}: exception", "Element not found");
+                }
+                await _client.HomeBtnAsync(_device);
             }
-            await _client.HomeBtnAsync(_device);
+
+            return result;
         }
 
-        public async Task<string> GetIpAddressAsync()
+        public async Task<AOResult<string>> GetIpAddressAsync()
         {
-            if (_device == null) return "0.0.0.0";
+            var result = new AOResult<string>();
 
-            try
+            if (_device == null) result.SetError($"{nameof(GetIpAddressAsync)}: exception", "Can't connect to device");
+            else
             {
-                await ClearRecentAppsAsync();
-                await _client.StartAppAsync(_device, Constants.Adb.CHROME);                
-            }
-            catch (Exception ex)
-            {
-                await _pageDialogService.DisplayAlertAsync("Error", $"Can't send keyevent:{ex.Message}", "OK");
+                try
+                {
+                    await ClearRecentAppsAsync();
+                    await _client.StartAppAsync(_device, Constants.Adb.CHROME);                
+                }
+                catch (Exception ex)
+                {
+                    result.SetError($"{nameof(ClearRecentAppsAsync)}: exception", "Can't send keyevent", ex);
+                }
+
+                await Task.Delay(10000);
+                var elChrom = await _client.FindElementAsync(_device, "//node[@text='Your public IP address']");
+                var screen = await _client.DumpScreenAsync(_device);
+                var nodeListText = screen?
+                        .SelectNodes("//node")?
+                        .Cast<XmlNode>()
+                        .Select(node => node.Attributes?["text"]?.Value)
+                        .Where(text => !string.IsNullOrEmpty(text))
+                        .ToList();
+                var index = nodeListText?.IndexOf("Your public IP address");
+
+                if (index < 1)
+                {
+                    result.SetError($"{nameof(ClearRecentAppsAsync)}: exception", "IP address not found");
+                }
+                else
+                {
+                    result.SetSuccess(nodeListText[(int)index - 1]);
+                }                
             }
 
-            await Task.Delay(10000);
-            var elChrom = await _client.FindElementAsync(_device, "//node[@text='Your public IP address']");
-            var screen = await _client.DumpScreenAsync(_device);
-            var nodeListText = screen?
-                    .SelectNodes("//node")?
-                    .Cast<XmlNode>()
-                    .Select(node => node.Attributes?["text"]?.Value)
-                    .Where(text => !string.IsNullOrEmpty(text))
-                    .ToList();
-            var index = nodeListText?.IndexOf("Your public IP address");
-
-            if (index < 1)
-            {
-                await _pageDialogService.DisplayAlertAsync("Error", "IP address not found", "OK");
-                return "0.0.0.0";
-            }
-
-            return nodeListText[(int)index - 1];
+            return result;
         }
     }
 }

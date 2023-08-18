@@ -1,5 +1,6 @@
 ﻿using AdbCommandExecutor.Serrvices.Adb;
 using Prism.Navigation;
+using Prism.Services;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -9,10 +10,15 @@ namespace AdbCommandExecutor.ViewModels
     public class MainPageViewModel : BaseViewModel
     {
         private readonly IAdbService _adbService;
+        private readonly IPageDialogService _pageDialogService;
 
-        public MainPageViewModel(INavigationService navigationService, IAdbService adbService) : base(navigationService)
+        public MainPageViewModel(
+            INavigationService navigationService, 
+            IAdbService adbService,
+            IPageDialogService pageDialogService) : base(navigationService)
         {
             _adbService = adbService;
+            _pageDialogService = pageDialogService;
         }
 
         #region -- Public properties --
@@ -33,21 +39,40 @@ namespace AdbCommandExecutor.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            await _adbService.StartAsync();
+            var result = await _adbService.StartAsync();
+
+            if (!result.IsSuccess)
+            {
+                await _pageDialogService.DisplayAlertAsync("Error", result.Message + result.Exception, "Ok");
+            }
         }
 
         #endregion
 
         #region -- Private helpers --
 
-        private Task OnClearRecentCommand()
+        private async Task OnClearRecentCommand()
         {
-            return _adbService.ClearRecentAppsAsync();
+            var result = await _adbService.ClearRecentAppsAsync();
+
+            if (!result.IsSuccess)
+            {
+                await _pageDialogService.DisplayAlertAsync("Error", result.Message + result.Exception, "Ok");
+            }
         }
 
         private async Task OnReadIpCommand()
         {
-            Ip = await _adbService.GetIpAddressAsync();
+            var result = await _adbService.GetIpAddressAsync();
+
+            if (result.IsSuccess)
+            {
+                Ip = result.Result;                
+            }
+            else
+            {
+                await _pageDialogService.DisplayAlertAsync("Error", result.Message + result.Exception, "Ok");
+            }
         }
 
         #endregion

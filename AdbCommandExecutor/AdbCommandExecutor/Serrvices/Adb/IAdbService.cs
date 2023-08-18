@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AdbCommandExecutor.Helpers.ProcessHelpers;
 using System.Threading.Tasks;
 
 namespace AdbCommandExecutor.Serrvices.Adb
 {
     public interface IAdbService
     {
-        Task StartAsync();
+        Task<AOResult> StartAsync();
 
-        Task<string> GetIpAddressAsync();
+        Task<AOResult<string>> GetIpAddressAsync();
 
-        Task ClearRecentAppsAsync();
+        Task<AOResult> ClearRecentAppsAsync();
     }
 }
